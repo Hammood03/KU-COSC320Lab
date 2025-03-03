@@ -1,0 +1,78 @@
+1)
+
+The next() function serves as the lexical analyzer (or tokenizer) in the C4 compiler. Its primary role is to read the source code character by character and convert it into a sequence of tokens. Tokens are the fundamental units of the language, such as keywords, identifiers, literals, and operators.
+
+Role in the Compilation Process:
+Tokenization: next() identifies and categorizes tokens, such as numbers, strings, identifiers, and operators. For instance, it differentiates between + (addition) and ++ (increment). The function keeps track of the current position in the source code (p pointer) and monitors line numbers for error reporting.
+
+Symbol Table Management: For identifiers, next() calculates a hash value and checks the symbol table to resolve variable and function names.
+
+Furthermore, the function skips invalid characters and handles basic syntax errors, such as unterminated strings or comments. By generating a stream of tokens, next() allows the parser (expr() and stmt()) to focus on syntactic analysis without dealing with character-level details.
+
+
+
+2)
+
+C4 uses a symbol table to handle variables and functions. The symbol table is a linear array of fixed-size entries, with each entry representing an identifier.
+
+Symbol Resolution Process:
+
+Each entry in the symbol table contains fields like Tk (token type), Hash (hash value of the identifier), Name (pointer to the identifier name), Class (e.g., global, local, function), Type (e.g., int, char), and Val (value or address).
+
+Identifier Lookup:
+
+When next() encounters an identifier, it computes a hash value and searches the symbol table for a matching entry. If a match is found, the token type and other details are retrieved. If no match is found, a new entry is added to the symbol table.
+
+Scope Management:
+
+Global variables and functions are stored in the symbol table with the Glo class. Local variables are stored with the Loc class and are managed using the SP and BP.
+
+Function Resolution:
+
+Functions are treated as symbols with the Fun class. The Val field stores the address of the function's code in the emitted instructions (e array). This approach enables C4 to resolve variables and functions efficiently, though it lacks advanced features like nested scopes or namespaces.
+
+
+
+3)
+
+C4 is a minimalistic compiler and omits many features found in full-featured C compilers like GCC or Clang. Some of its limitations include:
+
+C4 does not support the C preprocessor (e.g., #include, #define, #ifdef).
+
+It supports only basic types (int, char, and pointers). Complex types like struct, float, double are not natively supported.
+
+C4 does not include a standard library. Functions like printf are implemented as built-ins rather than library calls.
+
+C4 does not perform any code optimizations, such as constant folding or dead code elimination.
+
+Error reporting is minimal, and the compiler may crash on invalid input.
+
+Control flow like switch, goto, do-while, and for loop are not supported.
+
+
+
+4)
+
+Self-hosting means that the C4 compiler is written in C and can compile its own source code. This is achieved through:
+
+Bootstrapping: The initial version of C4 is compiled using an existing C compiler (e.g., GCC). This produces a binary capable of compiling C code.
+
+Self-Compilation: The C4 binary is then used to compile its own source code. If successful, this demonstrates that the compiler can self-host.
+
+Implications of Self-Hosting:
+
+Correctness: Self-hosting is a strong indicator of the compiler's correctness. If the compiler can compile itself without errors, it is likely robust.
+
+Simplicity: C4's design is intentionally simple to make self-hosting feasible. This limits its feature set but ensures the compiler remains understandable and maintainable.
+
+Educational Value: Self-hosting demonstrates the core principles of compiler construction in a minimalistic and accessible way, making C4 an excellent educational tool.
+
+Performance: Self-hosting compilers are often slower than optimized compilers because they prioritize simplicity over performance.
+
+Portability: A self-hosting compiler can be ported to new platforms by first cross-compiling it using an existing compiler.
+
+Challenges:
+
+Bootstrap Dependency: The initial version of C4 depends on an existing compiler, which may introduce compatibility issues.
+
+Limited Features: The simplicity required for self-hosting means that C4 cannot support advanced language features or optimizations.

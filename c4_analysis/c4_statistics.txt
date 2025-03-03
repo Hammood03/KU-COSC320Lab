@@ -1,0 +1,27 @@
+Total LOC: ~500
+
+Number of functions: 4
+
+LOC per function:
+next(): 84
+expr(): 148
+stmt(): 47
+main(): 195
+
+Number of global variables: 14 + 89 in the enums
+char *p, *lp, // current position in source code
+     *data;   // data/bss pointer
+int *e, *le,  // current position in emitted code (used for the stack)
+    *id,      // currently parsed identifier
+    *sym,     // symbol table (simple list of identifiers)
+    tk,       // current token
+    ival,     // current token value
+    ty,       // current expression type
+    loc,      // local variable offset
+    line,     // current line number
+    src,      // print source and assembly flag
+    debug;    // print executed instructions
+The enums include insructions used by the VM, types, tokens, hashes and function classes
+
+
+
